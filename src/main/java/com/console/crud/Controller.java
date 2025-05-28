@@ -61,7 +61,6 @@ public class Controller {
                     case 2 -> {//create user
                         System.out.println("Enter user name: ");
                         String name = scanner.nextLine();
-//                        scanner.nextLine();
 
                         System.out.println("Enter user surname: ");
                         String surname = scanner.nextLine();
@@ -136,7 +135,7 @@ public class Controller {
 
                         System.out.println(userService.deleteUser(id));
                     }
-                    case 5 -> {
+                    case 5 -> {//show credit cards of some user(by user id)
                         System.out.println("Entry user id");
                         int id;
                         try{
@@ -179,7 +178,7 @@ public class Controller {
 
                         System.out.println(creditCardService.addCreditCard(creditCard));
                     }
-                    case 8 -> {
+                    case 8 -> {//update credit card
                         System.out.println("Enter id of card to update");
                         int id;
                         try{
@@ -216,7 +215,7 @@ public class Controller {
                         System.out.println(creditCardService.updateCreditCard(id, creditCard));
 //                        System.out.println("Updated");
                     }
-                    case 9 -> {
+                    case 9 -> {//delete credit card (by id)
                         System.out.println("Entry id of credit card that you want to delete");
                         int id;
                         try{
@@ -231,7 +230,7 @@ public class Controller {
                         System.out.println(creditCardService.deleteCreditCard(id));
 //                        System.out.println("Deleted");
                     }
-                    case 0 -> {
+                    case 0 -> {//exit
                         isExit = true;
                         System.out.println("Exiting");
                         return;
