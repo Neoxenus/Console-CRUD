@@ -43,9 +43,9 @@ public class Controller {
         while(!isExit){
             System.out.println("Type number of command: ");
 
-            Integer command;
+            int command;
             try{
-                command = Integer.valueOf(scanner.nextLine());
+                command = Integer.parseInt(scanner.nextLine());
             }catch (NumberFormatException e){
                 System.out.println("Incorrect command");
                 continue;
@@ -54,10 +54,9 @@ public class Controller {
 
 
             try{
-                switch (command) {
-                    case 1 -> {
-                        System.out.println(userService.showAll());
-                    }
+                switch (command) { // Should separate different cases in different methods bcs mainLoop method is too big
+                                   // Mb use Command pattern?
+                    case 1 -> System.out.println(userService.showAll());
                     case 2 -> {//create user
                         System.out.println("Enter user name: ");
                         String name = scanner.nextLine();
@@ -149,9 +148,8 @@ public class Controller {
                         scanner.nextLine();
                         System.out.println(creditCardService.findByUserId(id));
                     }
-                    case 6 -> { // show all credit cards
-                        System.out.println(creditCardService.showAll());
-                    }
+                    case 6 -> // show all credit cards
+                            System.out.println(creditCardService.showAll());
                     case 7 -> {//adding credit card
                         System.out.println("Enter card number (16 numbers): ");
                         String number = scanner.nextLine();
