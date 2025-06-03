@@ -4,10 +4,10 @@ import com.console.crud.entities.CreditCard;
 import com.console.crud.entities.User;
 import com.console.crud.services.CreditCardService;
 import com.console.crud.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
-
 
 @Component
 public class Controller {
@@ -16,6 +16,7 @@ public class Controller {
     private final UserService userService;
     private final CreditCardService creditCardService;
 
+    @Autowired
     public Controller(CreditCardService creditCardService, UserService userService) {
         this.creditCardService = creditCardService;
         this.userService = userService;

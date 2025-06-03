@@ -5,14 +5,17 @@ import com.console.crud.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.SmartValidator;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+//@Transactional
 public class UserService {
 
     private final UserDAO userDAO;
@@ -23,6 +26,7 @@ public class UserService {
         this.validator = validator;
     }
 
+//    @Transactional(readOnly = true)
     public String showAll(){
         List<User> users = userDAO.showAll();
         if (!users.isEmpty())
