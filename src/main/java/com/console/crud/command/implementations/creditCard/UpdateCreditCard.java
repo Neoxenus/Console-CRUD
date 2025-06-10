@@ -1,0 +1,59 @@
+package com.console.crud.command.implementations.creditCard;
+
+import com.console.crud.command.BaseCommand;
+import com.console.crud.command.Command;
+import com.console.crud.entities.CreditCard;
+import com.console.crud.services.CreditCardService;
+import org.springframework.stereotype.Component;
+
+import java.util.Scanner;
+
+@Component
+public class UpdateCreditCard extends BaseCommand {
+    private final CreditCardService creditCardService;
+
+    public UpdateCreditCard(CreditCardService creditCardService) {
+        super(8, "Type 8 to update credit card");
+        this.creditCardService = creditCardService;
+    }
+
+    @Override
+    public void execute() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter id of card to update");
+        int id;
+        try{
+            id = scanner.nextInt();
+        }catch (Exception e){
+            System.out.println("Error:\nId must be a number");
+            scanner.nextLine(); //fix of broken scanner
+            return;
+        }
+        scanner.nextLine();
+
+        System.out.println("Enter card number: ");
+        String number = scanner.nextLine();
+
+        System.out.println("Enter user cvv: ");
+        String cvv = scanner.nextLine();
+
+        System.out.println("Enter card expire date: ");
+        String expireDate = scanner.nextLine();
+
+        System.out.println("Enter user id: ");
+        int userId;
+        try{
+            userId = scanner.nextInt();
+        } catch (Exception e){
+            System.out.println("Error:\nId must be a number");
+            scanner.nextLine(); //fix of broken scanner
+            return;
+        }
+        scanner.nextLine();
+
+        CreditCard creditCard = new CreditCard(number, cvv, expireDate, userId);
+
+        System.out.println(creditCardService.updateCreditCard(id, creditCard));
+                        System.out.println("Updated");
+    }
+}

@@ -43,7 +43,7 @@ public class CreditCard {
 //    @ManyToOne
 //    @JoinColumn(
 //            nullable = false,
-//            name = "receiver_account_id"
+//            name = "user_id"
 //    )
     private Integer user_id;
 
