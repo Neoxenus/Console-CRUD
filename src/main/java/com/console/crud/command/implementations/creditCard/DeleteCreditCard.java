@@ -1,7 +1,6 @@
 package com.console.crud.command.implementations.creditCard;
 
 import com.console.crud.command.BaseCommand;
-import com.console.crud.command.Command;
 import com.console.crud.services.CreditCardService;
 import org.springframework.stereotype.Component;
 
@@ -22,13 +21,11 @@ public class DeleteCreditCard extends BaseCommand {
         System.out.println("Entry id of credit card that you want to delete");
         int id;
         try{
-            id = scanner.nextInt();
+            id = Integer.parseInt(scanner.nextLine());
         }catch (Exception e){
             System.out.println("Error:\nId must be a number");
-            scanner.nextLine(); //fix of broken scanner
             return;
         }
-        scanner.nextLine();
 
         System.out.println(creditCardService.deleteCreditCard(id));
 //                        System.out.println("Deleted");

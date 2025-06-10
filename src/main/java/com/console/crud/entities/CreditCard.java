@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -33,7 +32,7 @@ public class CreditCard {
     @Size(min = 6, max = 7, message = "Expire date should be entered in the following format: m-yyyy, or mm-yyyy. Incorrect size")
     @Pattern(regexp = "^(0?[1-9]|1[0-2])-\\d{4}$",
             message = "Expire date should be entered in the following format: m-yyyy, or mm-yyyy. Incorrect format")
-    @Column(name = "expireDate")
+    @Column(name = "expire_date")
     private String expireDate;
 
     @Column(name = "balance")

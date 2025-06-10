@@ -1,7 +1,6 @@
 package com.console.crud.command.implementations.creditCard;
 
 import com.console.crud.command.BaseCommand;
-import com.console.crud.command.Command;
 import com.console.crud.services.CreditCardService;
 import org.springframework.stereotype.Component;
 
@@ -22,12 +21,10 @@ public class PrintCreditCardsOfUser extends BaseCommand {
         System.out.println("Entry user id");
         int id;
         try{
-            id = scanner.nextInt();
+            id = Integer.parseInt(scanner.nextLine());
         } catch (Exception e){
             System.out.println("Error:\nId must be a number");
             return;
-        } finally {
-            scanner.nextLine(); //fix of broken scanner
         }
 
         System.out.println(creditCardService.findByUserId(id));

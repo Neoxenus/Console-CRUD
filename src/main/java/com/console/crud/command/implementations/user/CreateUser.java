@@ -1,7 +1,6 @@
 package com.console.crud.command.implementations.user;
 
 import com.console.crud.command.BaseCommand;
-import com.console.crud.command.Command;
 import com.console.crud.entities.User;
 import com.console.crud.services.UserService;
 import org.springframework.stereotype.Component;
@@ -29,12 +28,10 @@ public class CreateUser extends BaseCommand {
         System.out.println("Enter user age: ");
         int age;
         try{
-            age = scanner.nextInt();
+            age = Integer.parseInt(scanner.nextLine());
         } catch (Exception e){
             System.out.println("Error:\nAge must be number");
             return;
-        } finally {
-            scanner.nextLine(); //fix of broken scanner
         }
         System.out.println("Enter user email: ");
 

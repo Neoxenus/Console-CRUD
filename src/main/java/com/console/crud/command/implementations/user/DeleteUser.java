@@ -1,7 +1,6 @@
 package com.console.crud.command.implementations.user;
 
 import com.console.crud.command.BaseCommand;
-import com.console.crud.command.Command;
 import com.console.crud.services.UserService;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +22,11 @@ public class DeleteUser extends BaseCommand {
         System.out.println("Enter id of user that you want to delete");
         int id;
         try{
-            id = scanner.nextInt();
+            id = Integer.parseInt(scanner.nextLine());
         } catch (Exception e){
             System.out.println("Error:\nId must be a number");
-            scanner.nextLine(); //fix of broken scanner
             return;
         }
-        scanner.nextLine();
 
         System.out.println(userService.deleteUser(id));
     }

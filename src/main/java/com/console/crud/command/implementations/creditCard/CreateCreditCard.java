@@ -1,8 +1,6 @@
 package com.console.crud.command.implementations.creditCard;
 
-import com.console.crud.DAO.CreditCardDAO;
 import com.console.crud.command.BaseCommand;
-import com.console.crud.command.Command;
 import com.console.crud.entities.CreditCard;
 import com.console.crud.services.CreditCardService;
 import org.springframework.stereotype.Component;
@@ -31,17 +29,14 @@ public class CreateCreditCard extends BaseCommand {
         String expireDate = scanner.nextLine();
 
         System.out.println("Enter user id: ");
-//                        scanner.nextInt();
         int userId;
         try{
-            userId = scanner.nextInt();
+            userId = Integer.parseInt(scanner.nextLine());
         }catch (Exception e){
             System.out.println("Error:\nId must be a number");
-            scanner.nextLine(); //fix of broken scanner
             return;
         }
 
-        scanner.nextLine();
         CreditCard creditCard = new CreditCard(number, cvv, expireDate, userId);
 
         System.out.println(creditCardService.addCreditCard(creditCard));
