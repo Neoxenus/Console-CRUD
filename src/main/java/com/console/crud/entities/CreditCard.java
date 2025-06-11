@@ -1,6 +1,7 @@
 package com.console.crud.entities;
 
 
+import com.console.crud.DTO.CreditCardDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -21,8 +22,8 @@ public class CreditCard {
 
     @Size(min = 16, max = 16, message = "Credit card number is exactly 16 integers. Incorrect size.")
     @Pattern(regexp = "\\d{16}", message = "Number should be 16 digits. Incorrect format")
-    @Column(name = "number")
-    private String number;//it`s also unique. Check for uniqueness is manual with DAO
+    @Column(name = "number", unique = true)
+    private String number;
 
     @Size(min = 3, max = 3, message = "CVV should be exactly 3 integers")
     @Pattern(regexp = "\\d{3}", message = "CVV should be exactly 3 integers")
@@ -38,19 +39,30 @@ public class CreditCard {
     @Column(name = "balance")
     private double balance;
 
-    @Column(name = "user_id")
-//    @ManyToOne
-//    @JoinColumn(
-//            nullable = false,
-//            name = "user_id"
-//    )
-    private Integer user_id;
+    @ManyToOne
+    @JoinColumn(
+            nullable = false,
+            name = "user_id"
+    )
+    private User user;
 
-    public CreditCard(String number, String cvv, String expireDate, Integer user_id) {
-        this.number = number;
-        this.cvv = cvv;
-        this.expireDate = expireDate;
-        balance = 0;
-        this.user_id = user_id;
+    public CreditCard(CreditCardDTO creditCard, User user){
+        this.number = creditCard.getNumber();
+        this.cvv = creditCard.getCvv();
+        this.expireDate = creditCard.getExpireDate();
+        this.balance = creditCard.getBalance();
+        this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "CreditCard{" +
+                "id=" + id +
+                ", number='" + number + '\'' +
+                ", cvv='" + cvv + '\'' +
+                ", expireDate='" + expireDate + '\'' +
+                ", balance=" + balance +
+                ", userId=" + user.getId() +
+                '}';
     }
 }

@@ -3,6 +3,7 @@ package com.console.crud.command.implementations.user;
 import com.console.crud.command.BaseCommand;
 import com.console.crud.entities.User;
 import com.console.crud.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
@@ -11,6 +12,7 @@ import java.util.Scanner;
 public class CreateUser extends BaseCommand {
     private final UserService userService;
 
+    @Autowired
     public CreateUser(UserService userService) {
         super(2, "Type 2 to save new user");
         this.userService = userService;

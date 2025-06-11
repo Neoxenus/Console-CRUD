@@ -1,7 +1,6 @@
 package com.console.crud.command.implementations;
 
 import com.console.crud.command.BaseCommand;
-import com.console.crud.command.Command;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -21,7 +21,6 @@ public class Controller {
     public void mainLoop(){
 
         printMenu();
-
         Scanner scanner = new Scanner(System.in);
 
         while(true){

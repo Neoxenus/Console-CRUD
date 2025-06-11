@@ -1,4 +1,4 @@
-package com.console.crud.DAO.implementations;
+package com.console.crud.DAO.implementations.hibernate;
 
 import com.console.crud.DAO.CreditDAO;
 import com.console.crud.entities.Credit;
@@ -10,8 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Optional;
 
 @Repository
 @Primary
@@ -38,13 +37,11 @@ public class CreditDaoHibernateImpl implements CreditDAO {
     }
 
     @Override
-    public List<Credit> showCreditById(int id) {
+    public Optional<Credit> showCreditById(int id) {
         try(Session session = this.sessionFactory.getCurrentSession()){
             session.beginTransaction();
 
-            List<Credit> credits = Stream.of(session.get(Credit.class, id))
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());;
+            Optional<Credit> credits = Optional.ofNullable(session.get(Credit.class, id));
 
             session.getTransaction().commit();
             return credits;
@@ -72,7 +69,7 @@ public class CreditDaoHibernateImpl implements CreditDAO {
             session.beginTransaction();
 
             List<Credit> credits =
-                    session.createQuery("from Credit where creditCard.user_id=:userId", Credit.class)
+                    session.createQuery("from Credit where creditCard.user.id=:userId", Credit.class)
                             .setParameter("userId", userId)
                             .getResultList();
 

@@ -1,9 +1,7 @@
 package com.console.crud.command.implementations.creditCard;
 
 import com.console.crud.command.BaseCommand;
-import com.console.crud.command.Command;
 import com.console.crud.services.CreditCardService;
-import com.console.crud.services.UserService;
 import org.springframework.stereotype.Component;
 
 @Component

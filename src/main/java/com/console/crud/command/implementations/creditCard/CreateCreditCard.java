@@ -1,7 +1,7 @@
 package com.console.crud.command.implementations.creditCard;
 
+import com.console.crud.DTO.CreditCardDTO;
 import com.console.crud.command.BaseCommand;
-import com.console.crud.entities.CreditCard;
 import com.console.crud.services.CreditCardService;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +37,7 @@ public class CreateCreditCard extends BaseCommand {
             return;
         }
 
-        CreditCard creditCard = new CreditCard(number, cvv, expireDate, userId);
+        CreditCardDTO creditCard = new CreditCardDTO(number, cvv, expireDate, 0d, userId);
 
         System.out.println(creditCardService.addCreditCard(creditCard));
     }

@@ -1,4 +1,4 @@
-package com.console.crud.DAO.implementations;
+package com.console.crud.DAO.implementations.hibernate;
 
 import com.console.crud.DAO.CreditCardDAO;
 import com.console.crud.entities.CreditCard;
@@ -10,8 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Optional;
 
 @Repository
 @Primary
@@ -26,30 +25,26 @@ public class CreditCardDaoHibernateImpl implements CreditCardDAO {
 
 
     @Override
-    public List<CreditCard> showCreditCardByNumber(String number) {
+    public Optional<CreditCard> showCreditCardByNumber(String number) {
         try(Session session = this.sessionFactory.getCurrentSession()){
             session.beginTransaction();
-            List<CreditCard> creditCards
-                    = session.createQuery("from CreditCard where number=:number", CreditCard.class)
+            Optional<CreditCard> creditCards
+                    = Optional.ofNullable(session.createQuery(
+                    "from CreditCard where number=:number", CreditCard.class)
                     .setParameter("number", number)
-                    .getResultList()
-                    .stream()
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
+                    .getSingleResultOrNull());
             session.getTransaction().commit();
             return creditCards;
         }
     }
 
     @Override
-    public List<CreditCard> showCreditCardById(int id) {
+    public Optional<CreditCard> showCreditCardById(int id) {
         try(Session session = this.sessionFactory.getCurrentSession()){
             session.beginTransaction();
 
-            List<CreditCard> creditCards
-                    = Stream.of(session.get(CreditCard.class, id))
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
+            Optional<CreditCard> creditCards
+                    = Optional.ofNullable(session.get(CreditCard.class, id));
 
             session.getTransaction().commit();
             return creditCards;
@@ -114,12 +109,9 @@ public class CreditCardDaoHibernateImpl implements CreditCardDAO {
         try(Session session = this.sessionFactory.getCurrentSession()){
             session.beginTransaction();
             List<CreditCard> creditCards
-                    = session.createQuery("from CreditCard where user_id=:userId", CreditCard.class)
+                    = session.createQuery("from CreditCard where user.id=:userId", CreditCard.class)
                     .setParameter("userId", userId)
-                    .getResultList()
-                    .stream()
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
+                    .getResultList();
             session.getTransaction().commit();
             return creditCards;
         }

@@ -22,11 +22,8 @@ public class Credit {
     @Min(value = 0, message = "Amount can't be negative")
     private Double amount;
 
-    //no need for user because we have userId in credit card
-    //private Integer userId;
     @ManyToOne
     @JoinColumn(
-            nullable = false,
             name = "credit_card_id"
     )
     private CreditCard creditCard;
@@ -72,23 +69,7 @@ public class Credit {
                 '}';
     }
 
-    public Credit(Double amount, CreditCard creditCard, Integer duration, Double interestRate, RateType rateType) {
-        this.amount = amount;
-        this.creditCard = creditCard;
-        this.duration = duration;
-        this.interestRate = interestRate;
-        this.rateType = rateType;
-    }
-
     public Credit(CreditDTO credit, CreditCard creditCard){
-        this.amount = credit.getAmount();
-        this.creditCard = creditCard;
-        this.duration = credit.getDuration();
-        this.interestRate = credit.getInterestRate();
-        this.rateType = credit.getRateType();
-    }
-
-    public void setNewValues(CreditDTO credit){
         this.amount = credit.getAmount();
         this.creditCard = creditCard;
         this.duration = credit.getDuration();

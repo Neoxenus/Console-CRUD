@@ -1,8 +1,5 @@
 package com.console.crud.command;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public abstract class BaseCommand implements Command{
 
     private final int code;

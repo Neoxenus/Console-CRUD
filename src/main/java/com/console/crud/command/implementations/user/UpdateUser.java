@@ -3,6 +3,7 @@ package com.console.crud.command.implementations.user;
 import com.console.crud.command.BaseCommand;
 import com.console.crud.entities.User;
 import com.console.crud.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
@@ -12,6 +13,7 @@ public class UpdateUser extends BaseCommand {
 
     private final UserService userService;
 
+    @Autowired
     public UpdateUser( UserService userService) {
         super(3, "Type 3 to update user");
         this.userService = userService;

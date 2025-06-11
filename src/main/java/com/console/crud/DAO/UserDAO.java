@@ -1,10 +1,10 @@
 package com.console.crud.DAO;
 
 import com.console.crud.entities.User;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserDAO {
@@ -12,8 +12,8 @@ public interface UserDAO {
 
     List<User> showAll();
 
-    List<User> showUser(int id);
-    List<User> showUserByEmail(String email);
+    Optional<User> showUser(int id);
+    Optional<User> showUserByEmail(String email);
     void addUser(User user);
 
 

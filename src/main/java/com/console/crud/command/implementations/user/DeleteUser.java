@@ -2,6 +2,7 @@ package com.console.crud.command.implementations.user;
 
 import com.console.crud.command.BaseCommand;
 import com.console.crud.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
@@ -11,6 +12,7 @@ public class DeleteUser extends BaseCommand {
 
     private final UserService userService;
 
+    @Autowired
     public DeleteUser(UserService userService) {
         super(4, "Type 4 to delete user");
         this.userService = userService;

@@ -2,7 +2,6 @@ package com.console.crud.command.implementations.credit;
 
 import com.console.crud.DTO.CreditDTO;
 import com.console.crud.command.BaseCommand;
-import com.console.crud.command.Command;
 import com.console.crud.entities.RateType;
 import com.console.crud.services.CreditService;
 import org.springframework.stereotype.Component;
@@ -82,7 +81,7 @@ public class UpdateCredit extends BaseCommand {
             return;
         }
 
-        System.out.println(creditService.updateUser(creditId,
+        System.out.println(creditService.updateCredit(creditId,
                 new CreditDTO(amount, creditCardId, duration, interestRate, rateType)));
     }
 }

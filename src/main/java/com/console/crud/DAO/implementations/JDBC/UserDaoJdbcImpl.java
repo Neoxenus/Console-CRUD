@@ -1,16 +1,15 @@
-package com.console.crud.DAO.implementations;
+package com.console.crud.DAO.implementations.JDBC;
 
 
 import com.console.crud.DAO.UserDAO;
 import com.console.crud.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDaoJdbcImpl implements UserDAO {
@@ -25,22 +24,21 @@ public class UserDaoJdbcImpl implements UserDAO {
         return jdbcTemplate.query("SELECT * FROM users", new BeanPropertyRowMapper<>(User.class));
     }
 
-    public List<User> showUser(int id){
-        return jdbcTemplate.query("SELECT * FROM users WHERE id=?",
-                new BeanPropertyRowMapper<>(User.class),
-                id);
+    public Optional<User> showUser(int id){
+        return Optional.ofNullable(jdbcTemplate.queryForObject(
+                "SELECT * FROM users WHERE id=?",
+                new BeanPropertyRowMapper<>(User.class), id));
 
     }
-    public List<User> showUserByEmail(String email){
-        return jdbcTemplate.query("SELECT * FROM users WHERE email=?",
+    public Optional<User> showUserByEmail(String email){
+        return Optional.ofNullable(
+                jdbcTemplate.queryForObject(
+                "SELECT * FROM users WHERE email=?",
                 new BeanPropertyRowMapper<>(User.class),
-                email);
+                        email));
 
     }
     public void addUser(User user){
-//        jdbcTemplate.update("INSERT INTO users VALUES(?, ?, ?)", user.getName(),user.getSurname(), user.getAge(),
-//                user.getEmail());
-
         jdbcTemplate.update(
                 "INSERT INTO users (name,surname,age, email) " +
                 "VALUES(?, ?, ?, ?)",user.getName(),user.getSurname(), user.getAge(),

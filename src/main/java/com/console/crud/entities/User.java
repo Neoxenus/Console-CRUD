@@ -6,7 +6,6 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.UniqueElements;
 
 @Data
 @AllArgsConstructor
@@ -34,8 +33,8 @@ public class User {
 
     @NotEmpty(message = "Email can`t be empty")
     @Email(message = "Email should be valid")
-    @Column(name="email")
-    private String email;//it`s also unique. Check for uniqueness is manual with DAO
+    @Column(name="email", unique = true)
+    private String email;
 
     public User(String name, String surname, Integer age, String email) {
         this.name = name;

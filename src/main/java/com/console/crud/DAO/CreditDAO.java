@@ -3,11 +3,12 @@ package com.console.crud.DAO;
 import com.console.crud.entities.Credit;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CreditDAO {
     List<Credit> showAll();
 
-    List<Credit> showCreditById(int id);
+    Optional<Credit> showCreditById(int id);
     List<Credit> showCreditsByCreditCardId(int creditCardId);
     List<Credit> showCreditsByUserId(int userId);
     void addCredit(Credit credit);

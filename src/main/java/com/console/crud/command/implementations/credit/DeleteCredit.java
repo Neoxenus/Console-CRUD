@@ -1,8 +1,8 @@
 package com.console.crud.command.implementations.credit;
 
 import com.console.crud.command.BaseCommand;
-import com.console.crud.command.Command;
 import com.console.crud.services.CreditService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
@@ -10,6 +10,7 @@ import java.util.Scanner;
 @Component
 public class DeleteCredit extends BaseCommand {
     private final CreditService creditService;
+    @Autowired
     public DeleteCredit(CreditService creditService) {
         super(13, "Type 13 to delete credit");
         this.creditService = creditService;
@@ -27,7 +28,7 @@ public class DeleteCredit extends BaseCommand {
         } finally {
             scanner.nextLine(); //fix of broken scanner
         }
-        System.out.println(creditService.deleteUser(id));
+        System.out.println(creditService.deleteCredit(id));
     }
 
 

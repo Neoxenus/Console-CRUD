@@ -2,7 +2,6 @@ package com.console.crud.command.implementations.credit;
 
 import com.console.crud.DTO.CreditDTO;
 import com.console.crud.command.BaseCommand;
-import com.console.crud.command.Command;
 import com.console.crud.entities.RateType;
 import com.console.crud.services.CreditService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import java.util.Scanner;
 public class CreateCredit extends BaseCommand {
 
     private final CreditService creditService;
+    @Autowired
     public CreateCredit(CreditService creditService) {
         super(11, "Type 11 to make new credit");
         this.creditService = creditService;
