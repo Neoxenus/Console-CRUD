@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 public class CreditCardServiceImpl implements CreditCardService {
 
 
-//    @Qualifier(value = "CreditCardDaoJdbcImplementation")
     private final CreditCardDAO creditCardDAO;
 
     private final UserDAO userDAO;
@@ -51,7 +50,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         }
 
         User user;
-        try{
+        try {
             user = userDAO.showUser(creditCardDTO.getUserId()).orElseThrow();
         } catch (NoSuchElementException e){
             errors += "No user with such an id\n";
@@ -69,7 +68,12 @@ public class CreditCardServiceImpl implements CreditCardService {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.joining("\n"));
         } else {
-            creditCardDAO.addCreditCard(creditCard);
+            try {
+                creditCardDAO.addCreditCard(creditCard);
+            } catch (Exception e){
+                errors += "Something went wrong:\n" + e.getMessage();
+                return errors;
+            }
             return "Added";
         }
     }
@@ -82,14 +86,13 @@ public class CreditCardServiceImpl implements CreditCardService {
 
         boolean notExistsCreditCard = creditCardDAO.showCreditCardById(id).isEmpty();
 
-
         if(existsWithNumber)
             errors += "Credit card with such an number already exists\n";
         if(notExistsCreditCard)
             errors += "No credit card with such an id\n";
 
         User user;
-        try{
+        try {
             user = userDAO.showUser(creditCardDTO.getUserId()).orElseThrow();
         } catch (NoSuchElementException e){
             errors += "No user with such an id\n";
@@ -106,7 +109,12 @@ public class CreditCardServiceImpl implements CreditCardService {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.joining("\n"));
         } else {
-            creditCardDAO.updateCreditCard(id, creditCard);
+            try {
+                creditCardDAO.updateCreditCard(id, creditCard);
+            } catch (Exception e){
+                errors += "Something went wrong:\n" + e.getMessage();
+                return errors;
+            }
             return "Updated";
         }
     }
@@ -117,7 +125,12 @@ public class CreditCardServiceImpl implements CreditCardService {
             errors += "No credit card with such id\n";
             return errors;
         } else {
-            creditCardDAO.deleteCreditCard(id);
+            try {
+                creditCardDAO.deleteCreditCard(id);
+            } catch (Exception e){
+                errors += "Something went wrong:\n" + e.getMessage();
+                return errors;
+            }
             return "Deleted";
         }
     }

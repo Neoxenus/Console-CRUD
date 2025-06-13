@@ -59,21 +59,16 @@ public class CreateCredit extends BaseCommand {
         }
 
         System.out.println("Enter type of crediting ([M/m] for monthly and [Y/y] for yearly payments):");
-        RateType rateType;
-        try{
-            String typeCode = scanner.nextLine().toLowerCase();
-            if(typeCode.equals("y")){
-                rateType = RateType.YEARLY;
-            } else if (typeCode.equals("m")) {
-                rateType = RateType.MONTHLY;
-            } else{
-                throw new IllegalStateException();
-            }
-        } catch (Exception e){
+        RateType rateType =
+        switch (scanner.nextLine().toLowerCase()) {
+            case "y" -> RateType.YEARLY;
+            case "m" -> RateType.MONTHLY;
+            default -> null;
+        };
+        if(rateType == null){
             System.out.println("Error:\nIncorrect input enter y or Y for yearly payments and m or M for monthly");
             return;
         }
-
 
         System.out.println(creditService.addCredit(
                 new CreditDTO(amount, creditCardId, duration, interestRate, rateType)));

@@ -50,7 +50,13 @@ public class UserServiceImpl implements UserService {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.joining("\n"));
         } else {
-            userDAO.addUser(user);
+            try {
+                userDAO.addUser(user);
+            } catch (Exception e){
+                errors += "Something went wrong:\n" + e.getMessage();
+                return errors;
+            }
+
             return "Added";
         }
     }
@@ -75,7 +81,13 @@ public class UserServiceImpl implements UserService {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.joining("\n"));
         } else {
-            userDAO.updateUser(id, updatedUser);
+            try {
+                userDAO.updateUser(id, updatedUser);
+            } catch (Exception e){
+                errors += "Something went wrong:\n" + e.getMessage();
+                return errors;
+            }
+
             return "Updated";
         }
     }
@@ -87,7 +99,13 @@ public class UserServiceImpl implements UserService {
             errors += "No users with such id\n";
             return errors;
         } else {
-            userDAO.deleteUser(id);
+            try {
+                userDAO.deleteUser(id);
+            } catch (Exception e){
+                errors += "Something went wrong:\n" + e.getMessage();
+                return errors;
+            }
+
             return "Deleted";
         }
     }

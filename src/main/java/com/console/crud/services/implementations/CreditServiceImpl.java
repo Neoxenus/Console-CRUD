@@ -54,7 +54,7 @@ public class CreditServiceImpl implements CreditService {
 
         CreditCard creditCard = null;
 
-        try{
+        try {
             creditCard = creditCardDAO.showCreditCardById(creditDTO.getCreditCardId()).orElseThrow();
         } catch (NoSuchElementException e){
             errors += "No credit card with such an id";
@@ -72,7 +72,13 @@ public class CreditServiceImpl implements CreditService {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.joining("\n"));
         } else {
-            creditDAO.addCredit(credit);
+            try {
+                creditDAO.addCredit(credit);
+            } catch (Exception e){
+                errors += "Something went wrong:\n" + e.getMessage();
+                return errors;
+            }
+
             return "Added";
         }
     }
@@ -85,7 +91,7 @@ public class CreditServiceImpl implements CreditService {
         }
 
         CreditCard creditCard;
-        try{
+        try {
             creditCard = creditCardDAO.showCreditCardById(updatedCredit.getCreditCardId()).orElseThrow();
         } catch (NoSuchElementException e){
             errors += "No credit card with such an id";
@@ -102,7 +108,13 @@ public class CreditServiceImpl implements CreditService {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.joining("\n"));
         } else {
-            creditDAO.updateCredit(id, credit);
+            try {
+                creditDAO.updateCredit(id, credit);
+            } catch (Exception e){
+                errors += "Something went wrong:\n" + e.getMessage();
+                return errors;
+            }
+
             return "Updated";
         }
     }
@@ -113,7 +125,13 @@ public class CreditServiceImpl implements CreditService {
             errors += "No credits with such an id\n";
             return errors;
         } else {
-            creditDAO.deleteCredit(id);
+            try {
+                creditDAO.deleteCredit(id);
+            } catch (Exception e){
+                errors += "Something went wrong:\n" + e.getMessage();
+                return errors;
+            }
+
             return "Deleted";
         }
     }
