@@ -2,6 +2,7 @@ package com.console.crud.DAO.implementations.hibernate;
 
 import com.console.crud.DAO.CreditDAO;
 import com.console.crud.entities.Credit;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class CreditDaoHibernateImpl implements CreditDAO {
 
     private final SessionFactory sessionFactory;
 
+
     @Autowired
     public CreditDaoHibernateImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
@@ -25,32 +27,44 @@ public class CreditDaoHibernateImpl implements CreditDAO {
 
     @Override
     public List<Credit> showAll() {
-        try(Session session = this.sessionFactory.getCurrentSession()){
-            session.beginTransaction();
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
 
+            session.beginTransaction();
             List<Credit> credits = session.createQuery("from Credit ", Credit.class)
                     .getResultList();
-
             session.getTransaction().commit();
             return credits;
+        } catch (HibernateException e){
+            session.getTransaction().rollback();
+            return List.of();
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public Optional<Credit> showCreditById(int id) {
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
 
             Optional<Credit> credits = Optional.ofNullable(session.get(Credit.class, id));
 
             session.getTransaction().commit();
             return credits;
+        } catch (HibernateException e){
+            session.getTransaction().rollback();
+            return Optional.empty();
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public List<Credit> showCreditsByCreditCardId(int creditCardId) {
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
 
             List<Credit> credits =
@@ -60,12 +74,18 @@ public class CreditDaoHibernateImpl implements CreditDAO {
 
             session.getTransaction().commit();
             return credits;
+        } catch (HibernateException e){
+            session.getTransaction().rollback();
+            return List.of();
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public List<Credit> showCreditsByUserId(int userId) {
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
 
             List<Credit> credits =
@@ -75,21 +95,32 @@ public class CreditDaoHibernateImpl implements CreditDAO {
 
             session.getTransaction().commit();
             return credits;
+        } catch (HibernateException e){
+            session.getTransaction().rollback();
+            return List.of();
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public void addCredit(Credit credit) {
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
             session.persist(credit);
             session.getTransaction().commit();
+        } catch (HibernateException e){
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public void updateCredit(int id, Credit updatedCredit) {
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try{
             session.beginTransaction();
 
             if (Objects.nonNull(session.find(Credit.class, id))) {
@@ -98,12 +129,17 @@ public class CreditDaoHibernateImpl implements CreditDAO {
             }
 
             session.getTransaction().commit();
+        } catch (HibernateException e){
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public void deleteCredit(int id) {
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
             Credit credit = session.find(Credit.class, id);
             if (Objects.nonNull(credit)) {
@@ -114,6 +150,10 @@ public class CreditDaoHibernateImpl implements CreditDAO {
 
             session.getTransaction().commit();
             //session.clear();
+        } catch (HibernateException e){
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
     }
 }

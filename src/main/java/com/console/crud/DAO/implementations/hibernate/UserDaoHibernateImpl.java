@@ -2,6 +2,7 @@ package com.console.crud.DAO.implementations.hibernate;
 
 import com.console.crud.DAO.UserDAO;
 import com.console.crud.entities.User;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,9 @@ public class UserDaoHibernateImpl implements UserDAO {
 
 
     @Override
-//    @Transactional(readOnly = true)
     public List<User> showAll() {
-
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
 
             List<User> users = session.createQuery("from User", User.class)
@@ -37,20 +37,30 @@ public class UserDaoHibernateImpl implements UserDAO {
 
             session.getTransaction().commit();
             return users;
+        } catch (HibernateException e) {
+            session.getTransaction().rollback();
+            return List.of();
+        } finally {
+            session.close();
         }
 
     }
 
     @Override
     public Optional<User> showUser(int id) {
-
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
 
             Optional<User> users = Optional.of(session.get(User.class, id));
 
             session.getTransaction().commit();
             return users;
+        } catch (HibernateException e) {
+            session.getTransaction().rollback();
+            return Optional.empty();
+        } finally {
+            session.close();
         }
 
     }
@@ -58,7 +68,8 @@ public class UserDaoHibernateImpl implements UserDAO {
     @Override
     public Optional<User> showUserByEmail(String email) {
 
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
             Optional<User> users
                     = session.createQuery("from User where email=:email", User.class)
@@ -67,22 +78,34 @@ public class UserDaoHibernateImpl implements UserDAO {
                     .findFirst();
             session.getTransaction().commit();
             return users;
+        } catch (HibernateException e) {
+            session.getTransaction().rollback();
+            return Optional.empty();
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public void addUser(User user) {
 
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
             session.persist(user);
             session.getTransaction().commit();
+        } catch (HibernateException e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public void updateUser(int id, User updatedUser) {
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+
+        try {
             session.beginTransaction();
 
             if (Objects.nonNull(session.find(User.class, id))) {
@@ -91,14 +114,18 @@ public class UserDaoHibernateImpl implements UserDAO {
             }
 
             session.getTransaction().commit();
+        } catch (HibernateException e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
 
     }
 
     @Override
     public void deleteUser(int id) {
-
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
             User user = session.find(User.class, id);
             if (Objects.nonNull(user)) {
@@ -109,6 +136,10 @@ public class UserDaoHibernateImpl implements UserDAO {
 
             session.getTransaction().commit();
             //session.clear();
+        } catch (HibernateException e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
 
     }

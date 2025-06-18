@@ -2,6 +2,7 @@ package com.console.crud.DAO.implementations.hibernate;
 
 import com.console.crud.DAO.CreditCardDAO;
 import com.console.crud.entities.CreditCard;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,8 @@ public class CreditCardDaoHibernateImpl implements CreditCardDAO {
 
     @Override
     public Optional<CreditCard> showCreditCardByNumber(String number) {
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
             Optional<CreditCard> creditCards
                     = Optional.ofNullable(session.createQuery(
@@ -35,12 +37,18 @@ public class CreditCardDaoHibernateImpl implements CreditCardDAO {
                     .getSingleResultOrNull());
             session.getTransaction().commit();
             return creditCards;
+        } catch (HibernateException e){
+            session.getTransaction().rollback();
+            return Optional.empty();
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public Optional<CreditCard> showCreditCardById(int id) {
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
 
             Optional<CreditCard> creditCards
@@ -48,12 +56,18 @@ public class CreditCardDaoHibernateImpl implements CreditCardDAO {
 
             session.getTransaction().commit();
             return creditCards;
+        } catch (HibernateException e){
+            session.getTransaction().rollback();
+            return Optional.empty();
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public List<CreditCard> showAll() {
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
 
             List<CreditCard> creditCards =
@@ -62,21 +76,32 @@ public class CreditCardDaoHibernateImpl implements CreditCardDAO {
 
             session.getTransaction().commit();
             return creditCards;
+        } catch (HibernateException e){
+            session.getTransaction().rollback();
+            return List.of();
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public void addCreditCard(CreditCard creditCard) {
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
             session.persist(creditCard);
             session.getTransaction().commit();
+        } catch (HibernateException e){
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public void updateCreditCard(int id, CreditCard creditCard) {
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
 
             if (Objects.nonNull(session.find(CreditCard.class, id))) {
@@ -85,12 +110,17 @@ public class CreditCardDaoHibernateImpl implements CreditCardDAO {
             }
 
             session.getTransaction().commit();
+        } catch (HibernateException e){
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public void deleteCreditCard(int id) {
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
             CreditCard creditCard = session.find(CreditCard.class, id);
             if (Objects.nonNull(creditCard)) {
@@ -101,12 +131,17 @@ public class CreditCardDaoHibernateImpl implements CreditCardDAO {
 
             session.getTransaction().commit();
             //session.clear();
+        } catch (HibernateException e){
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
     }
 
     @Override
     public List<CreditCard> findByUserId(int userId) {
-        try(Session session = this.sessionFactory.getCurrentSession()){
+        Session session = this.sessionFactory.getCurrentSession();
+        try {
             session.beginTransaction();
             List<CreditCard> creditCards
                     = session.createQuery("from CreditCard where user.id=:userId", CreditCard.class)
@@ -114,6 +149,11 @@ public class CreditCardDaoHibernateImpl implements CreditCardDAO {
                     .getResultList();
             session.getTransaction().commit();
             return creditCards;
+        } catch (HibernateException e){
+            session.getTransaction().rollback();
+            return List.of();
+        } finally {
+            session.close();
         }
     }
 }

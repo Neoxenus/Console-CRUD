@@ -1,7 +1,5 @@
 package com.console.crud;
 
-import com.console.crud.entities.CreditCard;
-import com.console.crud.entities.User;
 import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.SessionFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -28,10 +26,7 @@ public class Config {
     public DataSource dataSource(){
         return DataSourceBuilder.create().build();
     }
-    @Bean
-    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-        return new HibernateTransactionManager(sessionFactory);
-    }
+
     @Bean
     public JdbcTemplate jdbcTemplate(){
         return new JdbcTemplate(dataSource());
@@ -42,11 +37,15 @@ public class Config {
             EntityManagerFactoryBuilder builder) {
         return builder
                 .dataSource(dataSource())
-                .packages(User.class, CreditCard.class)
+                .packages("com.console.crud.entities")
                 .persistenceUnit("emf")
                 .build();
     }
 
+    @Bean
+    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
+        return new HibernateTransactionManager(sessionFactory);
+    }
 
     @Bean
     @Primary
