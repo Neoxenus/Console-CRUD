@@ -81,8 +81,8 @@ public class CreditCardServiceImpl implements CreditCardService {
     public String updateCreditCard(int id, CreditCardDTO creditCardDTO) {
         String errors = "Error\n";
         boolean existsWithNumber =  creditCardDAO.showCreditCardByNumber(creditCardDTO.getNumber())
-                .map(card -> card.getId().equals(id))
-                .orElse(true);
+                .map(card -> !card.getId().equals(id))
+                .orElse(false);
 
         boolean notExistsCreditCard = creditCardDAO.showCreditCardById(id).isEmpty();
 

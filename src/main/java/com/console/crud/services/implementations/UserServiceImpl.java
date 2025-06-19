@@ -75,8 +75,8 @@ public class UserServiceImpl implements UserService {
         String errors = "Error\n";
         boolean notExistsWithId = userDAO.showUser(id).isEmpty();
         boolean existsWithEmail = userDAO.showUserByEmail(userDTO.getEmail())
-                .map(user -> user.getId().equals(id))
-                .orElse(true);
+                .map(user -> !user.getId().equals(id))
+                .orElse(false);
 
         if(notExistsWithId){
             errors += "No users with such id\n";
