@@ -1,6 +1,7 @@
 package com.console.crud.entities;
 
 
+import com.console.crud.DTO.UserDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -35,11 +36,12 @@ public class User {
     @Email(message = "Email should be valid")
     @Column(name="email", unique = true)
     private String email;
+    
 
-    public User(String name, String surname, Integer age, String email) {
-        this.name = name;
-        this.surname = surname;
-        this.age = age;
-        this.email = email;
+    public User(UserDTO user){
+        this.name = user.getName();
+        this.surname = user.getSurname();
+        this.age = user.getAge();
+        this.email = user.getEmail();
     }
 }

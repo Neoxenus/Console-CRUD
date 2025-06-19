@@ -1,7 +1,7 @@
 package com.console.crud.command.implementations.user;
 
+import com.console.crud.DTO.UserDTO;
 import com.console.crud.command.BaseCommand;
-import com.console.crud.entities.User;
 import com.console.crud.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,7 +39,7 @@ public class CreateUser extends BaseCommand {
 
 
         String email = scanner.nextLine();
-        User user = new User(name, surname, age, email);
+        UserDTO user = new UserDTO(name, surname, age, email);
 
         System.out.println(userService.addUser(user));
     }

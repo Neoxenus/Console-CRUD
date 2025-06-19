@@ -1,6 +1,7 @@
 package com.console.crud.services.implementations;
 
 import com.console.crud.DAO.UserDAO;
+import com.console.crud.DTO.UserDTO;
 import com.console.crud.entities.User;
 import com.console.crud.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +35,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String addUser(User user){
+    public String addUser(UserDTO userDTO){
+
+
         String errors = "Error\n";
-        boolean existsWithEmail = userDAO.showUserByEmail(user.getEmail()).isPresent();
+        boolean existsWithEmail = userDAO.showUserByEmail(userDTO.getEmail()).isPresent();
         if(existsWithEmail){
             errors += "User with such an email already exists\n";
         }
+
+        User user = new User(userDTO);
 
         BindingResult bindingResult = new BeanPropertyBindingResult(user, "user");
         validator.validate(user, bindingResult);
@@ -62,19 +67,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String updateUser(int id, User updatedUser) {
+    public String updateUser(int id, UserDTO userDTO) {
 
-        BindingResult bindingResult = new BeanPropertyBindingResult(updatedUser, "user");
-        validator.validate(updatedUser, bindingResult);
+
+
+
         String errors = "Error\n";
         boolean notExistsWithId = userDAO.showUser(id).isEmpty();
-        boolean existsWithEmail = userDAO.showUserByEmail(updatedUser.getEmail()).isPresent();
+        boolean existsWithEmail = userDAO.showUserByEmail(userDTO.getEmail())
+                .map(user -> user.getId().equals(id))
+                .orElse(true);
+
         if(notExistsWithId){
             errors += "No users with such id\n";
         }
         if(existsWithEmail){
             errors += "User with such an email already exists\n";
         }
+
+        User user = new User(userDTO);
+        BindingResult bindingResult = new BeanPropertyBindingResult(user, "user");
+        validator.validate(user, bindingResult);
+
         if(bindingResult.hasErrors() || existsWithEmail || notExistsWithId){
             return errors + bindingResult.getAllErrors()
                     .stream()
@@ -82,7 +96,7 @@ public class UserServiceImpl implements UserService {
                     .collect(Collectors.joining("\n"));
         } else {
             try {
-                userDAO.updateUser(id, updatedUser);
+                userDAO.updateUser(id, user);
             } catch (Exception e){
                 errors += "Something went wrong:\n" + e.getMessage();
                 return errors;
